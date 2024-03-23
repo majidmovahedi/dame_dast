@@ -42,14 +42,16 @@ class UserBookmarkView(viewsets.ViewSet):
         instance = UserBookmark.objects.get(pk=self.kwargs['pk'])
         serializer = self.serializer_class(instance, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
+            instance.image_file.delete(save=False)
             serializer.save()
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-    def destroy(self, request, pk):
-        queryset = UserBookmark.objects.get(pk=pk)
+    def destroy(self, request, *args, **kwargs):
+        queryset = UserBookmark.objects.get(pk=self.kwargs['pk'])
+        queryset.image_file.delete(save=False)
         queryset.delete()
         return Response({'message': 'bookmark deleted'})
     
