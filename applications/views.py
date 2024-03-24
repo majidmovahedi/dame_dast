@@ -25,9 +25,6 @@ class PodcastView(APIView):
         return Response(serializer_data.data, status=status.HTTP_200_OK)
     
 
-
-
-
 class TodoView(viewsets.ViewSet):
     serializer_class = TodoSerializer
     permission_classes = [IsAuthenticated]
